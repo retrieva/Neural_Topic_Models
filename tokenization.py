@@ -5,6 +5,7 @@ import multiprocessing
 
 from tqdm import tqdm
 
+import MeCab
 from pyhanlp import *
 import spacy
 
@@ -12,6 +13,7 @@ LANG_CLS = defaultdict(lambda:"SpacyTokenizer")
 LANG_CLS.update({
     "zh": "HanLPTokenizer",
     "en": "SpacyTokenizer",
+    "ja": "MeCabTokenizer",
 })
 
 SPACY_MODEL = {
@@ -25,7 +27,7 @@ class HanLPTokenizer(object):
         self.pat = re.compile(r'[0-9!"#$%&\'()*+,-./:;<=>?@—，。：★、￥…【】（）《》？“”‘’！\[\\\]^_`{|}~\u3000]+')
         self.stopwords = stopwords
         print("Using HanLP tokenizer")
-        
+
     def tokenize(self, lines: List[str]) -> List[List[str]]:
         docs = []
         for line in tqdm(lines):
@@ -36,21 +38,36 @@ class HanLPTokenizer(object):
                 tokens = [t for t in tokens if not (t in self.stopwords)]
             docs.append(tokens)
         return docs
-        
-        
+
+
 class SpacyTokenizer(object):
     def __init__(self, lang="en", stopwords=None):
         self.stopwords = stopwords
         self.nlp = spacy.load(SPACY_MODEL[lang], disable=['ner', 'parser'])
         print("Using SpaCy tokenizer")
 
-        
     def tokenize(self, lines: List[str]) -> List[List[str]]:
         docs = self.nlp.pipe(lines, batch_size=1000, n_process=multiprocessing.cpu_count())
         docs = [[token.lemma_ for token in doc if not (token.is_stop or token.is_punct)] for doc in docs]
         return docs
-        
+
+
+class MeCabTokenizer(object):
+    def __init__(self, stopwords=None):
+        self.stopwords = stopwords
+        self.wakati = MeCab.Tagger("-Owakati")
+        print("Using MeCab tokenizer")
+
+    def tokenize(self, lines: List[str]) -> List[List[str]]:
+        docs = []
+        for line in lines:
+            tokens = self.wakati.parse(line).split()
+            if self.stopwords is not None:
+                tokens = [t for t in tokens if not (t in self.stopwords)]
+            docs.append(tokens)
+        return docs
+
 
 if __name__ == '__main__':
-    tokenizer=HanLPTokenizer()
+    tokenizer = HanLPTokenizer()
     print(tokenizer.tokenize(['他拿的是《红楼梦》？！我还以为他是个Foreigner———']))
