@@ -36,7 +36,7 @@ If you have any question or suggestion about this implementation, please do not 
 <h2 id="Installation">1. Installation</h2>
 
 ```shell
-$ git clone https://github.com/zll17/Neural_Topic_Models
+$ git clone https://github.com/retrieva/Neural_Topic_Models.git
 $ cd Neural_Topic_Models/
 $ sudo pip install -r requirements.txt
 ```
@@ -76,6 +76,9 @@ The architecture of the model is a simple VAE, which takes the BOW of a document
 ​	--auto_adj: once adopted, there would be no need to specify the no_above argument, the model will automatically filter out the top 20 words with the highest document frequencies.
 
 ​	--bkpt_continue: once adopted, the model will load the last checkpoint file and continue training.
+
+​	--lang: to select a tokenizer for the language. Choose one of zh, en, or ja.
+
 
 
 
