@@ -22,6 +22,7 @@ from utils import *
 from dataset import DocDataset
 from multiprocessing import cpu_count
 #from torch.utils.data import Dataset,DataLoader
+import numpy as np
 
 parser = argparse.ArgumentParser('ETM topic model')
 parser.add_argument('--taskname',type=str,default='cnews10k',help='Taskname e.g cnews10k')
@@ -98,8 +99,10 @@ def main():
     from gensim.models import KeyedVectors
     w2v = KeyedVectors.load_word2vec_format(save_name_wd,binary=False)
     w2v.save(save_name.split('.')[0]+'.w2v')
-    print(w2v.vocab.keys())
-    #w2v.most_similar('你好')
+    
+    #print(w2v.vocab.keys())
+    
+    """
     for i in range(n_topic):
         print(f'Most similar to Topic {i}')
         print(w2v.most_similar(f'TP{i}'))
@@ -108,6 +111,19 @@ def main():
         for t,e in zip(txt_lst,embeds):
             wfp.write(f'{e}:{t}\n')
     pickle.dump({'txts':txt_lst,'embeds':embeds},open('etm_embeds.pkl','wb'))
+    """
+    
+    infer_topics = []
+    dictionary = docSet.dictionary
+    for doc in docSet:
+        infer_topics.append(int(np.argmax(model.inference(doc_tokenized=doc, dictionary=dictionary))))
+        #infer_topics.append(model.inference(doc_tokenized=doc, dictionary=dictionary))
+    
+    infer_topics_npy = np.array(infer_topics, dtype=int)
+    output = taskname + "_ETM_clustering_result"
+    np.save(output,infer_topics_npy)
+    print(infer_topics_npy)
+    print(infer_topics_npy.shape)
 
 if __name__ == "__main__":
     main()

@@ -20,6 +20,7 @@ from models import GMNTM
 from utils import *
 from dataset import DocDataset
 from multiprocessing import cpu_count
+import numpy
 
 parser = argparse.ArgumentParser('GMNTM topic model')
 parser.add_argument('--taskname',type=str,default='cnews10k',help='Taskname e.g cnews10k')
@@ -82,6 +83,18 @@ def main():
         for t,e in zip(txt_lst,embeds):
             wfp.write(f'{e}:{t}\n')
     pickle.dump({'txts':txt_lst,'embeds':embeds},open('gmntm_embeds.pkl','wb'))
+
+    infer_topics = []
+    dictionary = docSet.dictionary
+    for doc in docSet:
+        infer_topics.append(int(numpy.argmax(model.inference(doc_tokenized=doc, dictionary=dictionary))))
+        #infer_topics.append(model.inference(doc_tokenized=doc, dictionary=dictionary))
+    
+    infer_topics_npy = numpy.array(infer_topics, dtype=int)
+    output = taskname + "_GMNTM_clustering_result"
+    numpy.save(output,infer_topics_npy)
+    print(infer_topics_npy)
+    print(infer_topics_npy.shape)
 
 if __name__ == "__main__":
     main()

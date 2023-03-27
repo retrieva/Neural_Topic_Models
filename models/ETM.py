@@ -184,7 +184,8 @@ class ETM:
                 idx = dictionary.token2id[token]
                 doc_bow[0][idx] += 1.0
             except:
-                print(f'{token} not in the vocabulary.')
+                continue
+                #print(f'{token} not in the vocabulary.')
         doc_bow = doc_bow.to(self.device)
         with torch.no_grad():
             mu,log_var = self.vae.encode(doc_bow)

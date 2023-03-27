@@ -22,6 +22,7 @@ from utils import *
 from dataset import DocDataset
 from multiprocessing import cpu_count
 #from torch.utils.data import Dataset,DataLoader
+import numpy
 
 parser = argparse.ArgumentParser('GSM topic model')
 parser.add_argument('--taskname',type=str,default='cnews10k',help='Taskname e.g cnews10k')
@@ -68,6 +69,7 @@ def main():
 
     if ckpt:
         checkpoint=torch.load(ckpt)
+        param=checkpoint["param"]
         param.update({"device": device})
         model = GSM(**param)
         model.train(train_data=docSet,batch_size=batch_size,test_data=docSet,num_epochs=num_epochs,log_every=10,beta=1.0,criterion=criterion,ckpt=checkpoint)
@@ -82,6 +84,20 @@ def main():
         for t,e in zip(txt_lst,embeds):
             wfp.write(f'{e}:{t}\n')
     pickle.dump({'txts':txt_lst,'embeds':embeds},open('gsm_embeds.pkl','wb'))
+
+    infer_topics = []
+    dictionary = docSet.dictionary
+    for doc in docSet:
+        # print(doc)
+        infer_topics.append(int(numpy.argmax(model.inference(doc_tokenized=doc, dictionary=dictionary))))
+        #infer_topics.append(model.inference(doc_tokenized=doc, dictionary=dictionary))
+    
+    infer_topics_npy = numpy.array(infer_topics, dtype=int)
+    output = taskname + "_GSM_clustering_result"
+    numpy.save(output,infer_topics_npy)
+    print(infer_topics_npy)
+    print(infer_topics_npy.shape)
+
 
 if __name__ == "__main__":
     main()

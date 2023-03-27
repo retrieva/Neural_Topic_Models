@@ -21,6 +21,7 @@ from models import BATM
 from utils import *
 from dataset import DocDataset
 from multiprocessing import cpu_count
+import numpy
 
 parser = argparse.ArgumentParser('Bidirectional Adversarial Topic model')
 parser.add_argument('--taskname',type=str,default='cnews10k',help='Taskname e.g cnews10k')
@@ -70,6 +71,18 @@ def main():
     model.evaluate(test_data=docSet)
     save_name = f'./ckpt/BATM_{taskname}_tp{n_topic}_{time.strftime("%Y-%m-%d-%H-%M", time.localtime())}.ckpt'
     torch.save({'generator':model.generator.state_dict(),'encoder':model.encoder.state_dict(),'discriminator':model.discriminator.state_dict()},save_name)
+
+    infer_topics = []
+    dictionary = docSet.dictionary
+    for doc in docSet:
+        infer_topics.append(int(numpy.argmax(model.inference(doc_tokenized=doc, dictionary=dictionary))))
+        #infer_topics.append(model.inference(doc_tokenized=doc, dictionary=dictionary))
+    
+    infer_topics_npy = numpy.array(infer_topics, dtype=int)
+    output = taskname + "_BATM_clustering_result"
+    numpy.save(output,infer_topics_npy)
+    print(infer_topics_npy)
+    print(infer_topics_npy.shape)
 
 if __name__ == "__main__":
     main()

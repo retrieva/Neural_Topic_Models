@@ -133,3 +133,19 @@ class BATM:
             else:
                 topic_words.append([self.id2token[idx] for idx in indices[topic_id]])
             return topic_words
+
+    def inference(self, doc_tokenized, dictionary,normalize=True):
+        doc_bow = torch.zeros(1,self.bow_dim)
+        for token in doc_tokenized:
+            try:
+                idx = dictionary.token2id[token]
+                doc_bow[0][idx] += 1.0
+            except:
+                continue
+                #print(f'{token} not in the vocabulary.')
+        doc_bow = doc_bow.to(self.device)
+        with torch.no_grad():
+            theta = self.encoder.forward(doc_bow)
+            if normalize:
+                theta = F.softmax(theta,dim=1)
+            return theta.detach().cpu().squeeze(0).numpy()
