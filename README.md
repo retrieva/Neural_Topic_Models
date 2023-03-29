@@ -318,6 +318,7 @@ Then **modify the name of the text file** into the format {taskname}_lines.txt, 
 Finally, **choose the right tokenizer or create one by yourself**. The tokenizer should be customized according to text type. `tokenization.py` provides two tokenizers, HanLP for Chinese and spaCy for English. To use these tokenizers, specify the language with the command line argument:
 ```shell
 $ python3 BATM_run.py --taskname zhdd --n_topic 20 --num_epochs 300 --no_above 0.039 --no_below 5 --lang zh
+$ python3 BATM_run.py --taskname zhdd --n_topic 20 --num_epochs 300 --no_above 0.039 --no_below 5 --lang ja ##日本語の場合
 ```
 The default configuration utilizes HanLP as tokenizer to deal with modern Chinese sentences. If you need to process other types of text (i.e. in ancient Chinese), open the file `tokenization.py` , update `LANG_CLS` and create a new class with the method:
 ```python
