@@ -6,6 +6,11 @@
 
 元実装に日本語も扱えるようにMeCab Tokenizerを追加したものです。実行時に--lang jaを指定することで実行できます。データの形式などは[Usage](https://github.com/retrieva/Neural_Topic_Models#4-usage)を参照して下さい。
 
+以下の環境で動作を確認しています。
+* OS: Ubuntu22.04
+* python: 3.8.0
+* pip: 23.0.1
+
 PyTorch implementations of Neural Topic Model varieties proposed in recent years, including NVDM-GSM, WTM-MMD (W-LDA), WTM-GMM, ETM, BATM ,and GMNTM. The aim of this project is to provide a practical and working example for neural topic models to facilitate the research of related fields. Configuration of the models will not exactly the same as those proposed in the papers, and the hyper-parameters are not carefully finetuned, but I have chosen to get the core ideas covered. 
 
 Empirically, NTM is superior to classical statistical topic models ,especially on short texts. Datasets of short news ([cnews10k](#cnews10k_exp)), dialogue utterances ([zhddline](#zhddline_exp)) and conversation ([zhdd](#zhdd_exp)), are presented for evaluation purpose, all of which are in Chinese. As a comparison to the NTM, an out-of-box LDA script is also provided, which is based on the gensim library. 
