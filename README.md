@@ -4,7 +4,7 @@
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-元実装に日本語も扱えるようにMeCab Tokenizerを追加したものです。実行時に--lang jaを指定することで実行できます。データの形式などはusageを参照して下さい。
+元実装に日本語も扱えるようにMeCab Tokenizerを追加したものです。実行時に--lang jaを指定することで実行できます。データの形式などは[Usage](https://github.com/retrieva/Neural_Topic_Models#4-usage)を参照して下さい。
 
 PyTorch implementations of Neural Topic Model varieties proposed in recent years, including NVDM-GSM, WTM-MMD (W-LDA), WTM-GMM, ETM, BATM ,and GMNTM. The aim of this project is to provide a practical and working example for neural topic models to facilitate the research of related fields. Configuration of the models will not exactly the same as those proposed in the papers, and the hyper-parameters are not carefully finetuned, but I have chosen to get the core ideas covered. 
 
