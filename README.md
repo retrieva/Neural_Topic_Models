@@ -4,7 +4,7 @@
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-元実装に日本語も扱えるようにMeCab Tokenizerを追加したものです。実行時に--lang jaを指定することで実行できます。データの形式などは[Usage](https://github.com/retrieva/Neural_Topic_Models#4-usage)を参照して下さい。
+元実装に日本語も扱えるようにMeCab Tokenizerを追加したものです。実行時に--lang jaを指定することで実行できます。データの形式などは[Usage](https://github.com/retrieva/Neural_Topic_Models#4-usage)を参照して下さい。環境構築は[Installation](https://github.com/retrieva/Neural_Topic_Models/blob/master/README.md#1-installation)を参照して下さい。
 
 以下の環境で動作を確認しています。
 * OS: Ubuntu22.04
