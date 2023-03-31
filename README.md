@@ -13,7 +13,7 @@
 
 ### 使い方の簡単な説明
 1. [学習データ作成スクリプト](https://github.com/retrieva/clustering-circle/tree/main/code/ntm)を実行し、作成された{taskname}_lines.txtをdataフォルダにおく
-2. 使いたいntmアルゴリズムのrun.pyを実行する
+2. 使いたいntmアルゴリズムのrun.pyを実行する (BATMとGMNTMは動かなかったので除外しました)
 3. {taskname}_{algorithm}_clustering_result.npy という名前のクラスタリング結果ファイルが作成される
 
 例
