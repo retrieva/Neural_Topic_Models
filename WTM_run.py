@@ -54,7 +54,7 @@ def main():
     bkpt_continue = args.bkpt_continue
     use_tfidf = args.use_tfidf
     rebuild = args.rebuild
-    dist = args.dist 
+    dist = args.dist
     batch_size = args.batch_size
     criterion = args.criterion
     auto_adj = args.auto_adj
@@ -66,7 +66,7 @@ def main():
     if auto_adj:
         no_above = docSet.topk_dfs(topk=20)
         docSet = DocDataset(taskname,lang=lang,no_below=no_below,no_above=no_above,rebuild=rebuild,use_tfidf=False)
-    
+
     voc_size = docSet.vocabsize
     print('voc size:',voc_size)
 
@@ -93,13 +93,13 @@ def main():
     for doc in docSet:
         infer_topics.append(int(numpy.argmax(model.inference(doc_tokenized=doc, dictionary=dictionary))))
         #infer_topics.append(model.inference(doc_tokenized=doc, dictionary=dictionary))
-    
+
     infer_topics_npy = numpy.array(infer_topics, dtype=int)
-    output = taskname + "_GMWTM_clustering_result"
+    output = taskname + "_WTM_clustering_result"
     numpy.save(output,infer_topics_npy)
     print(infer_topics_npy)
     print(infer_topics_npy.shape)
-    
-    
+
+
 if __name__ == "__main__":
     main()
