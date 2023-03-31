@@ -50,8 +50,8 @@ class DocDataset(Dataset):
             self.docs = [line for line in self.docs if line!=[]]
             # build dictionary
             self.dictionary = Dictionary(self.docs)
-            #self.dictionary.filter_n_most_frequent(remove_n=20)
-            self.dictionary.filter_extremes(no_below=no_below, no_above=no_above, keep_n=None)  # use Dictionary to remove un-relevant tokens
+            self.dictionary.filter_n_most_frequent(remove_n=20)
+            #self.dictionary.filter_extremes(no_below=no_below, no_above=no_above, keep_n=None)  # use Dictionary to remove un-relevant tokens
             self.dictionary.compactify()
             self.dictionary.id2token = {v:k for k,v in self.dictionary.token2id.items()} # because id2token is empty by default, it is a bug.
             # convert to BOW representation
@@ -74,7 +74,7 @@ class DocDataset(Dataset):
         self.vocabsize = len(self.dictionary)
         self.numDocs = len(self.bows)
         print(f'Processed {len(self.bows)} documents.')
-        
+
     def __getitem__(self,idx):
         bow = torch.zeros(self.vocabsize)
         if self.use_tfidf:
@@ -84,10 +84,10 @@ class DocDataset(Dataset):
         bow[list(item[0])] = torch.tensor(list(item[1])).float()
         txt = self.docs[idx]
         return txt,bow
-    
+
     def __len__(self):
         return self.numDocs
-    
+
     def collate_fn(self,batch_data):
         texts,bows = list(zip(*batch_data))
         return texts,torch.stack(bows,dim=0)
@@ -108,7 +108,7 @@ class DocDataset(Dataset):
         cfs_topk = sorted([(self.dictionary.id2token[k],fq) for k,fq in self.dictionary.cfs.items()],key=lambda x: x[1],reverse=True)[:topk]
         for i,(word,freq) in enumerate(cfs_topk):
             print(f'{i+1}:{word} --> {freq}/{ntokens} = {(1.0*freq/ntokens):>.13f}')
-    
+
     def topk_dfs(self,topk=20):
         ndoc = len(self.docs)
         dfs_topk = self.show_dfs_topk(topk=topk)
@@ -181,7 +181,7 @@ class TestData(Dataset):
         bow[list(item[0])] = torch.tensor(list(item[1])).float()
         txt = self.docs[idx]
         return txt,bow
-    
+
     def __len__(self):
         return self.numDocs
 
@@ -204,4 +204,4 @@ if __name__ == '__main__':
         print(doc)
         break
     print(docSet.topk_dfs(20))
-    
+
