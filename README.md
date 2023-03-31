@@ -342,6 +342,7 @@ Once done the preparation job, run the corresponding running script, in this cas
 
 ```shell
 $ python3 WTM_run.py --taskname zhddline --n_topic 20 --num_epochs 1000 --no_below 5 --dist gmm-std --auto_adj
+$ python3 WTM_run.py --taskname zhddline --n_topic 20 --num_epochs 1000 --no_below 5 --dist gmm-std --auto_adj ##日本語の場合
 ```
 
 The model will evaluate the topic coherence and topic diversity every 10 epochs, and display the top 20 topic words for each topic. The weight of the model will be stored in the `ckpt` directory once the training is done. The result of the topic modeling is shown below.
